@@ -1,0 +1,56 @@
+This is a simple demo of using projection onto convex sets (POCS)
+to perform superresolution using multiple captured frames. One can
+compare the result with bilinear projection applying on a single 
+frame. 
+
+A demo video is available at http://www.youtube.com/watch?v=1vpsn2BJ1bE
+
+============================================================
+
+Here is the basic procedure to run the code. 
+
+1. Load an image set. There is one demo set included. Just go to File->Load images 
+to load set1. You may generate your own images or even capture from a web 
+cam directly (that option was disabled since it only works in windows. Matlab 
+veterans should be able to enable it easily by just setting the button back to 
+visible using guide). 
+
+2. Perform global registration. I adopted a simple FFT based registration method 
+here. Note that this only works for translational shift but not rotation. So for the best 
+performance, you want to shake the camera gently up/down and left/right when you 
+capture your images (to increase diversity) but not rotating it. 
+
+3. Select a region of interest (ROI) to perform SR. You may select "zoom 4x" in 
+the popup menu to see the effect of a digital zoom (using bilinear interprelation) 
+typically obtained in a digital camera. 
+
+4. Now you may click SR (Color) to perform SR for all 3 color components of 
+the ROI. The process is quite slow since I didn't try to optimize it and it is run
+in native matlab code. You may also click SR (BW) instead and it will only 
+perform SR for the red component (taking 1/3 of the time). 
+
+==========================================================
+
+Some explanation of the SR step.
+
+The SR (Color) essentially run SR (BW) on the three color components 
+independently. So I will only briefly explain how SR (BW) works here. 
+
+Two stages are used here in the SR step. In the first stage, an upsampled
+image from each frame will be combined to form a "rough" SR image after subpixel 
+registration. In the second stage, POCS is used in the combination. Basically,
+we will look for the translated upsampled image that looks closest to the current
+SR image and modify the current SR image so that its lower resolution/translation 
+projection will be equivalent to updated SR image. Then, we will look for the second 
+closest translated upsampled image and we will continue this step until all images 
+are exhausted. However, we have set a threshold and skip the images that appear
+to be too different from the current SR image (those images are likely to be 
+outliers anyway). We may iterate the POCS stage multiple times. In the code, we
+run POCS twice. 
+
+There are a lot of adjustment can be made in the code (the number of times to 
+run POCS, the values of the thresholds and so on) but we didn't try to tweak 
+these parameters too much for now. 
+
+Copyright (c) 2009-2011 Samuel Cheng
+

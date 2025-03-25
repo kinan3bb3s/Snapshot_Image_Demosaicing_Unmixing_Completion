@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite our paper."
+authors:
+  - family-names: "Abbas"
+    given-names: "Kinan"
+  - family-names: "Puigt"
+    given-names: "Matthieu"
+  - family-names: "Delmaire"
+    given-names: "Gilles"
+  - family-names: "Roussel"
+    given-names: "Gilles"
+title: "Locally-Rank-One-Based Joint Unmixing and Demosaicing Methods for Snapshot Spectral Images. Part II: A Filtering-Based Framework"
+journal: "IEEE Transactions on Computational Imaging"
+year: 2024
+volume: 10
+pages: "806-817"
+doi: "10.1109/TCI.2024.3402441"
+license: "MIT"
