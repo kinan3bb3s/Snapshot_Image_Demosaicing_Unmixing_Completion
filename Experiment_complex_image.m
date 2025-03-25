@@ -1,10 +1,11 @@
 % LOCALLY-RANK-ONE-BASED JOINT UNMIXING AND DEMOSAICING METHODS FOR SNAPSHOT SPECTRAL IMAGES
 % Implementation inspired by:
-% Abbas, K., Puigt, M., Delmaire, G., & Roussel, G. (2024). 
-% "Locally-Rank-One-Based Joint Unmixing and Demosaicing Methods for Snapshot Spectral Images. Part II: A Filtering-Based Framework"
-% IEEE Transactions on Computational Imaging, 10, 806-817. DOI: 10.1109/TCI.2024.3402441
+% K. Abbas, M. Puigt, G. Delmaire, and G. Roussel (2024).
+% "Locally-Rank-One-Based Joint Unmixing and Demosaicing Methods for Snapshot Spectral Images. Part I: A Matrix-Completion Framework."
+% IEEE Transactions on Computational Imaging, 10, 848-862. DOI: 10.1109/TCI.2024.3402322
 %
-% Copyright (c) Kinan Abbas 2024
+% MIT License
+% Copyright (c) Kinan Abbas, Matthieu Puigt, Gilles Delmaire, and Gilles Roussel 2024
 %
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +24,7 @@
 % LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 % SOFTWARE.
+
 %% Cleaning and loading everything to the path
 close all;
 clear;
