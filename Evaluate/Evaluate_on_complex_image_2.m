@@ -1,4 +1,3 @@
-% Evaluate_on_complex_image.m
 % LOCALLY-RANK-ONE-BASED JOINT UNMIXING AND DEMOSAICING METHODS FOR SNAPSHOT SPECTRAL IMAGES
 % Implementation inspired by:
 % K. Abbas, M. Puigt, G. Delmaire, and G. Roussel (2024).
@@ -24,9 +23,9 @@
 % AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 % LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-% SOFTWARE.
+% SOFTWARE..
+function [] = Evaluate_on_complex_image_2(num_band, sz, smp_scenario, num_obs_pxl, GRMR_params, WNMF_params, unmixing, num_of_experiments, Image_Selection)
 
-function [] = Evaluate_on_complex_image(num_band, sz, smp_scenario, num_obs_pxl, GRMR_params, WNMF_params, unmixing, num_of_experiments, Image_Selection)
     % Test demosaicing and unmixing on complex Image, showing abundance maps and endmembers
     % Author: Kinan ABBAS
     % Creation Date: Oct 10 2022
@@ -63,7 +62,6 @@ function [] = Evaluate_on_complex_image(num_band, sz, smp_scenario, num_obs_pxl,
         Finit = rand(r, n) + 0.0001;
         WNMF_params.Ginit = Ginit;
         WNMF_params.Finit = Finit;
-        WNMF_params.global_rank = r; % Set global rank in WNMF_params
         
         %% Applying the mosaic filter to acquire SSI image
         if num_band == 25
@@ -81,13 +79,6 @@ function [] = Evaluate_on_complex_image(num_band, sz, smp_scenario, num_obs_pxl,
         
         [SMP_seq, FilterPattern_lst] = make_sampling_operators2(n1, n2, n3, num_obs_pxl, num_band, smp_scenario, SpectralProfiles);
         [I_MOS_seq] = acquire_observations(I_HS, SMP_seq, num_obs_pxl);
-        
-        %% Prepare FilterPattern_Final for KPWNMF and VPWNMF
-        FilterPattern_Final = zeros(n1, n2, num_obs_pxl);
-        for gg = 1:num_obs_pxl
-            cc = cell2mat(FilterPattern_lst(gg));
-            FilterPattern_Final(:,:,gg) = cc;
-        end
         
         %% Weighted bilinear interpolation (WB)
         disp('Running WB');
@@ -112,10 +103,26 @@ function [] = Evaluate_on_complex_image(num_band, sz, smp_scenario, num_obs_pxl,
         WB_toc = toc;
         
         %% KPWNMF
-        [I_WNMF_rec, G_WNMF, F_WNMF, F_pool, Final_norm, WNMF_toc] = KPWNMF(I_MOS_seq, SMP_seq, FilterPattern_Final, num_band, WNMF_params, num_obs_pxl, I_WB, smp_scenario);
+        disp('Running WNMF with K-means');
+        FilterPattern_Final = zeros(n1, n2, num_obs_pxl);
+        WNMF_params.global_rank = r;
+        for gg = 1:num_obs_pxl
+            cc = cell2mat(FilterPattern_lst(gg));
+            FilterPattern_Final(:,:,gg) = cc;
+        end
+        tic;
+        [I_WNMF_rec, F_pool, Final_norm] = WNMF_Demosaicing(I_MOS_seq, SMP_seq, FilterPattern_Final, num_band, WNMF_params, num_obs_pxl, I_WB, smp_scenario);
+        [~, G_WNMF, F_WNMF] = low_rank_completion_methods(I_MOS_seq, SMP_seq, num_band, WNMF_params, num_obs_pxl, I_WNMF_rec, F_pool, Final_norm);
+        WNMF_toc = toc;
         
-        %% VPWNMF
-        [I_WNMF_rec1, G_WNMF1, F_WNMF1, F_pool1, Final_norm1, WNMF_toc1] = VPWNMF(I_MOS_seq, SMP_seq, FilterPattern_Final, num_band, WNMF_params, num_obs_pxl, I_WB, smp_scenario);
+        %% VCA_PWNMF
+        disp('Running WNMF with VCA');
+        WNMF_params.Kmeans = false;
+        WNMF_params.Kmeans_cut = 4;
+        WNMF_params.threshold = 35;
+        tic;
+        [~, G_WNMF1, F_WNMF1] = low_rank_completion_methods(I_MOS_seq, SMP_seq, num_band, WNMF_params, num_obs_pxl, I_WNMF_rec, F_pool, Final_norm);
+        WNMF_toc1 = toc;
         
         %% Naive WNMF
         disp('Running Naive WNMF');
@@ -131,7 +138,7 @@ function [] = Evaluate_on_complex_image(num_band, sz, smp_scenario, num_obs_pxl,
         WNMF_params1.Scaling = true;
         tic;
         [~, G_WNMF2, F_WNMF2] = Naive_WNMF(I_MOS_seq, SMP_seq, FilterPattern_Final, num_band, WNMF_params1, num_obs_pxl, I_WB, smp_scenario);
-        WNMF_toc266 = toc;
+        WNMF_toc2 = toc;
         
         %% Visualization
         if (show_Figuers)
@@ -177,10 +184,10 @@ function [] = Evaluate_on_complex_image(num_band, sz, smp_scenario, num_obs_pxl,
             subplot(3,2,4); imagesc(G_Naive(:,:,2)); title('Naive WNMF Abundance 2');
             subplot(3,2,5); imagesc(G(:,:,3)); title('GT Abundance 3');
             subplot(3,2,6); imagesc(G_Naive(:,:,3)); title('Naive WNMF Abundance 3');
-
-            % Draw spectra example
-            % F_WNMF_rec=F_WNMF*0.68;
-            % figure;plot(F_HS');hold on;plot(F_WNMF_rec','--');
+            
+            
         end
+        
+     
     end
 end
