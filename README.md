@@ -11,45 +11,18 @@ DOI: [10.1109/TCI.2024.3402322](https://doi.org/10.1109/TCI.2024.3402322)
 This project implements a matrix-completion framework for joint unmixing and demosaicing of snapshot spectral images, leveraging locally rank-one approximations and sparsity techniques as outlined in the referenced article. The code is provided under the MIT License (see below).
 
 ## Requirements
-- MATLAB (version R20XXx or later recommended)
-- To reproduce all the figures of the paper, you need to download the following functions: `PPID`, `GRMR`, `ItSD`, and others. These can be found at [https://github.com/gtsagkatakis/Snapshot_Spectral_Image_demosaicing](https://github.com/gtsagkatakis/Snapshot_Spectral_Image_demosaicing).
+- MATLAB (version R2020 or later recommended)
+- To reproduce all the figures of the paper, you need to download the other methods functions: `PPID`, `GRMR`, `ItSD`, etc... These can be found at [https://github.com/gtsagkatakis/Snapshot_Spectral_Image_demosaicing](https://github.com/gtsagkatakis/Snapshot_Spectral_Image_demosaicing).
 
 ## Running
 To test all the methods, run `main.m`.
 
 ## License
-This project is licensed under the MIT License. See below for details:
-% LOCALLY-RANK-ONE-BASED JOINT UNMIXING AND DEMOSAICING METHODS FOR SNAPSHOT SPECTRAL IMAGES
-% Implementation inspired by:
-% K. Abbas, M. Puigt, G. Delmaire, and G. Roussel (2024).
-% "Locally-Rank-One-Based Joint Unmixing and Demosaicing Methods for Snapshot Spectral Images. Part I: A Matrix-Completion Framework."
-% IEEE Transactions on Computational Imaging, 10, 848-862. DOI: 10.1109/TCI.2024.3402322
-%
-% MIT License
-% Copyright (c) Kinan Abbas, Matthieu Puigt, Gilles Delmaire, and Gilles Roussel 2024
-%
-% Permission is hereby granted, free of charge, to any person obtaining a copy
-% of this software and associated documentation files (the "Software"), to deal
-% in the Software without restriction, including without limitation the rights
-% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-% copies of the Software, and to permit persons to whom the Software is
-% furnished to do so, subject to the following conditions:
-%
-% The above copyright notice and this permission notice shall be included in all
-% copies or substantial portions of the Software.
-%
-% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-% SOFTWARE.
-
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 
 ## Acknowledgments
-if you use this code in your research please cite the article :
+If you use this code in your research please cite the article :
 @ARTICLE{10535201,
 author={Abbas, Kinan and Puigt, Matthieu and Delmaire, Gilles and Roussel, Gilles},
 journal={IEEE Transactions on Computational Imaging},
